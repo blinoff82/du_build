@@ -1317,6 +1317,9 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
         "default_system_dev_certificate",
         "build/target/product/security/testkey")
 
+  # The place where the output from the subprocess should go.
+  log_file = sys.stdout if OPTIONS.verbose else subprocess.PIPE
+
   # A/B updater expects a signing key in RSA format. Gets the key ready for
   # later use in step 3, unless a payload_signer has been specified.
   if OPTIONS.payload_signer is None:
@@ -1368,8 +1371,8 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
          "--target_image", target_file]
   if source_file is not None:
     cmd.extend(["--source_image", source_file])
-  p1 = common.Run(cmd, stdout=subprocess.PIPE)
-  p1.wait()
+  p1 = common.Run(cmd, stdout=log_file, stderr=subprocess.STDOUT)
+  p1.communicate()
   assert p1.returncode == 0, "brillo_update_payload generate failed"
 
   # 2. Generate hashes of the payload and metadata files.
@@ -1380,8 +1383,8 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
          "--signature_size", "256",
          "--metadata_hash_file", metadata_sig_file,
          "--payload_hash_file", payload_sig_file]
-  p1 = common.Run(cmd, stdout=subprocess.PIPE)
-  p1.wait()
+  p1 = common.Run(cmd, stdout=log_file, stderr=subprocess.STDOUT)
+  p1.communicate()
   assert p1.returncode == 0, "brillo_update_payload hash failed"
 
   # 3. Sign the hashes and insert them back into the payload file.
@@ -1427,8 +1430,8 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
          "--signature_size", "256",
          "--metadata_signature_file", signed_metadata_sig_file,
          "--payload_signature_file", signed_payload_sig_file]
-  p1 = common.Run(cmd, stdout=subprocess.PIPE)
-  p1.wait()
+  p1 = common.Run(cmd, stdout=log_file, stderr=subprocess.STDOUT)
+  p1.communicate()
   assert p1.returncode == 0, "brillo_update_payload sign failed"
 
   # 4. Dump the signed payload properties.
@@ -1437,8 +1440,8 @@ def WriteABOTAPackageWithBrilloScript(target_file, output_file,
   cmd = ["brillo_update_payload", "properties",
          "--payload", signed_payload_file,
          "--properties_file", properties_file]
-  p1 = common.Run(cmd, stdout=subprocess.PIPE)
-  p1.wait()
+  p1 = common.Run(cmd, stdout=log_file, stderr=subprocess.STDOUT)
+  p1.communicate()
   assert p1.returncode == 0, "brillo_update_payload properties failed"
 
   if OPTIONS.wipe_user_data:
