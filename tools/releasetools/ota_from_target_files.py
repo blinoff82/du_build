@@ -205,7 +205,6 @@ def AppendAssertions(script, info_dict, oem_dicts=None):
       device = GetBuildProp("ro.product.device", info_dict)
     else:
       device = OPTIONS.override_device
-    script.AssertDevice(device)
   else:
     if not oem_dicts:
       raise common.ExternalError(
@@ -412,8 +411,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   metadata["ota-type"] = "BLOCK"
 
-  #ts = GetBuildProp("ro.build.date.utc", OPTIONS.info_dict)
-  #ts_text = GetBuildProp("ro.build.date", OPTIONS.info_dict)
+  AppendAssertions(script, OPTIONS.info_dict, oem_dicts)
+  device_specific.FullOTA_Assertions()
 
   # Two-step package strategy (in chronological order, which is *not*
   # the order in which the generated script has things):
