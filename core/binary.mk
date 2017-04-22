@@ -266,6 +266,8 @@ else
     my_compiler := clang
 endif
 
+include $(BUILD_SYSTEM)/archidroid.mk
+
 ifeq ($(SDCLANG),true)
     ifeq ($(my_sdclang),)
         my_sdclang := true
