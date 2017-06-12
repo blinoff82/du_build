@@ -972,7 +972,7 @@ endef
 ###########################################################
 
 define transform-l-to-c-or-cpp
-@echo "Lex: $(PRIVATE_MODULE) <= $<"
+@echo -e ${CL_BLU}"Lex:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
 @mkdir -p $(dir $@)
 $(hide) $(LEX) -o$@ $<
 endef
@@ -983,7 +983,7 @@ endef
 ###########################################################
 
 define transform-y-to-c-or-cpp
-@echo "Yacc: $(PRIVATE_MODULE) <= $<"
+@echo -e ${CL_BLU}"Yacc:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
 @mkdir -p $(dir $@)
 $(YACC) $(PRIVATE_YACCFLAGS) \
   --defines=$(basename $@).h \
@@ -1076,7 +1076,7 @@ endef
 
 define transform-aidl-to-java
 @mkdir -p $(dir $@)
-@echo "Aidl: $(PRIVATE_MODULE) <= $<"
+@echo -e ${CL_BLU}"Aidl:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
 $(hide) $(AIDL) -d$(patsubst %.java,%.P,$@) $(PRIVATE_AIDL_FLAGS) $< $@
 endef
 #$(AIDL) $(PRIVATE_AIDL_FLAGS) $< - | indent -nut -br -npcs -l1000 > $@
@@ -1109,7 +1109,7 @@ endef
 define transform-vts-to-cpp
 @mkdir -p $(dir $@)
 @mkdir -p $(PRIVATE_HEADER_OUTPUT_DIR)
-@echo "Generating C++ from VTS: $(PRIVATE_MODULE) <= $<"
+@echo -e ${CL_BLU}"Generating C++ from VTS:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
 $(hide) $(VTSC) -d$(basename $@).vts.P $(PRIVATE_VTS_FLAGS) \
     $< $(PRIVATE_HEADER_OUTPUT_DIR) $@
 endef
@@ -1133,7 +1133,7 @@ endef
 
 define transform-logtags-to-java
 @mkdir -p $(dir $@)
-@echo "logtags: $@ <= $<"
+@echo -e ${CL_BLU}"logtags:"${CL_RST}" $@ <= $<"
 $(hide) $(JAVATAGS) -o $@ $^
 endef
 
@@ -1144,7 +1144,7 @@ endef
 
 define transform-proto-to-java
 @mkdir -p $(dir $@)
-@echo "Protoc: $@ <= $(PRIVATE_PROTO_SRC_FILES)"
+@echo -e ${CL_BLU}"Protoc:"${CL_RST}" $@ <= $(PRIVATE_PROTO_SRC_FILES)"
 @rm -rf $(PRIVATE_PROTO_JAVA_OUTPUT_DIR)
 @mkdir -p $(PRIVATE_PROTO_JAVA_OUTPUT_DIR)
 $(hide) for f in $(PRIVATE_PROTO_SRC_FILES); do \
@@ -1161,7 +1161,7 @@ endef
 ## Commands for running protoc to compile .proto into .pb.cc (or.pb.c) and .pb.h
 ######################################################################
 define transform-proto-to-cc
-@echo "Protoc: $@ <= $<"
+@echo -e ${CL_BLU}"Protoc:"${CL_RST}" $@ <= $<"
 @mkdir -p $(dir $@)
 $(hide) $(PROTOC) \
 	$(addprefix --proto_path=, $(PRIVATE_PROTO_INCLUDES)) \
@@ -1177,7 +1177,7 @@ endef
 ## Commands for generating DBus adaptors from .dbus-xml files.
 ######################################################################
 define generate-dbus-adaptors
-@echo "Generating DBus adaptors for $(PRIVATE_MODULE)"
+@echo -e ${CL_CYN}"Generating DBus adaptors for"${CL_RST}" $(PRIVATE_MODULE)"
 @mkdir -p $(dir $@)
 $(hide) $(DBUS_GENERATOR) \
 	--service-config=$(PRIVATE_DBUS_SERVICE_CONFIG) \
@@ -1189,7 +1189,7 @@ endef
 ## Commands for generating DBus proxies from .dbus-xml files.
 ######################################################################
 define generate-dbus-proxies
-@echo "Generating DBus proxies for $(PRIVATE_MODULE)"
+@echo -e ${CL_CYN}"Generating DBus proxies for"${CL_CYN}" $(PRIVATE_MODULE)"
 @mkdir -p $(dir $@)
 $(hide) $(DBUS_GENERATOR) \
 	--service-config=$(PRIVATE_DBUS_SERVICE_CONFIG) \
