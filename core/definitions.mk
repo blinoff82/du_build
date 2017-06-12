@@ -1361,7 +1361,7 @@ $(hide) $(RELATIVE_PWD) $(PRIVATE_CC) \
 endef
 
 define transform-host-c-to-o-no-deps
-@echo ${CL_YLW}"$($(PRIVATE_PREFIX)DISPLAY) $(PRIVATE_COMPILER_ID) C:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
+@echo -e ${CL_YLW}"$($(PRIVATE_PREFIX)DISPLAY) $(PRIVATE_COMPILER_ID) C:"${CL_RST}" $(PRIVATE_MODULE) <= $<"
 $(call transform-host-c-or-s-to-o-no-deps, $(PRIVATE_CFLAGS) $(PRIVATE_CONLYFLAGS) $(PRIVATE_DEBUG_CFLAGS))
 endef
 
