@@ -92,7 +92,7 @@ LOCAL_NO_2ND_ARCH_MODULE_SUFFIX :=
 
 my_module_arch_supported :=
 
-ifeq ($(SDCLANG), true)
+ifeq ($(TARGET_USE_SDCLANG), true)
 ifeq ($(LOCAL_SDCLANG_LTO), true)
 include $(SDCLANG_LTO_DEFS)
 endif
